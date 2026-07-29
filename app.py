@@ -8,10 +8,88 @@ from PIL import Image
 
 # Page Configuration
 st.set_page_config(
-    page_title="Harshit's Trading Journal & OS",
-    page_icon="📈",
+    page_title="Harshit Terminal | Pro Journal",
+    page_icon="👑",
     layout="wide"
 )
+
+# Custom CSS for Premium Gold & Matte Black Theme
+st.markdown("""
+    <style>
+    /* Dark Gold Theme Background */
+    .stApp {
+        background-color: #0A0A0C;
+        color: #E2E8F0;
+    }
+    
+    /* Title Styling & Gold Glow */
+    h1, h2, h3 {
+        color: #D4AF37 !important;
+        font-family: 'Cinzel', 'Trebuchet MS', serif;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    /* Metric Values Gold Accent */
+    div[data-testid="stMetricValue"] {
+        color: #FFD700 !important;
+        font-size: 30px !important;
+        font-weight: bold;
+        text-shadow: 0px 0px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    div[data-testid="stMetricLabel"] {
+        color: #A0AEC0 !important;
+    }
+
+    /* Buttons Gold Gradient */
+    .stButton>button {
+        background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+        color: #000000 !important;
+        font-weight: 800 !important;
+        border-radius: 8px;
+        border: none;
+        padding: 10px 24px;
+        transition: all 0.3s ease;
+        box-shadow: 0px 4px 12px rgba(212, 175, 55, 0.2);
+    }
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 20px rgba(255, 215, 0, 0.5);
+    }
+
+    /* Inputs Style */
+    input, select, textarea {
+        background-color: #121216 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #332A15 !important;
+        border-radius: 8px !important;
+    }
+
+    /* Tabs Styling - Gold Border Active */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: #121216;
+        padding: 8px;
+        border-radius: 10px;
+        border: 1px solid #262010;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 45px;
+        background-color: transparent;
+        border-radius: 6px;
+        color: #8B949E;
+        font-weight: 600;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #D4AF37 0%, #AA771C 100%) !important;
+        color: #000000 !important;
+        font-weight: bold;
+    }
+    </style>
+""", unsafe_allow_innerHTML=True)
 
 # Passcode Protection
 def check_password():
@@ -19,14 +97,21 @@ def check_password():
         st.session_state["password_correct"] = False
         
     if not st.session_state["password_correct"]:
-        st.title("🔒 Harshit Trading Terminal - Secure Access")
-        pwd = st.text_input("🔑 Passcode daalein access karne ke liye:", type="password")
-        if st.button("Unlock Terminal"):
-            if pwd == "Harshity@9363":  # Aapka Password
-                st.session_state["password_correct"] = True
-                st.rerun()
-            else:
-                st.error("Galat Passcode!")
+        st.markdown("<br>", unsafe_allow_innerHTML=True)
+        col_a, col_b, col_c = st.columns([1, 2, 1])
+        with col_b:
+            if os.path.exists("logo.png"):
+                st.image("logo.png", use_container_width=True)
+            st.markdown("<h2 style='text-align: center;'>👑 HARSHIT TRADING TERMINAL</h2>", unsafe_allow_innerHTML=True)
+            st.markdown("<p style='text-align: center; color: #A0AEC0;'>GROW • FOCUS • ACHIEVE</p>", unsafe_allow_innerHTML=True)
+            
+            pwd = st.text_input("🔑 Enter Passcode:", type="password")
+            if st.button("Unlock Terminal", use_container_width=True):
+                if pwd == "Harshity@9363":
+                    st.session_state["password_correct"] = True
+                    st.rerun()
+                else:
+                    st.error("❌ Invalid Key")
         return False
     return True
 
@@ -57,30 +142,38 @@ def save_data(df):
 
 df = load_data()
 
-st.title("📈 Harshit's Trading Terminal & Journal")
+# Header Section with Logo
+col_logo, col_title = st.columns([1, 5])
+with col_logo:
+    if os.path.exists("logo.png"):
+        st.image("logo.png", width=120)
+with col_title:
+    st.markdown("<h1 style='margin-bottom:0;'>HARSHIT'S TRADING TERMINAL</h1>", unsafe_allow_innerHTML=True)
+    st.markdown("<p style='color:#D4AF37; margin-top:0; font-size:16px;'>FinanceWithHarshit • Institutional Execution & Journal OS</p>", unsafe_allow_innerHTML=True)
+
 st.markdown("---")
 
 # Navigation Tabs
 tab_entry, tab_analytics, tab_psych, tab_calendar, tab_strategy, tab_goals = st.tabs([
-    "1️⃣ Trade Management", 
-    "2️⃣ Advanced Analytics", 
-    "3️⃣ Psychology & Mistakes", 
-    "4️⃣ Review & Calendar", 
-    "5️⃣ Strategy & Setups", 
-    "6️⃣ Goals & Risk Capital"
+    "📊 Trade Log", 
+    "📈 Performance Analytics", 
+    "🧠 Psychology & Mistakes", 
+    "📅 Calendar Review", 
+    "🏷️ Strategy Edge", 
+    "🎯 Risk & Capital Goals"
 ])
 
 # ==========================================
-# 1. TRADE MANAGEMENT (LOGGING & AUTO-CALC)
+# 1. TRADE MANAGEMENT
 # ==========================================
 with tab_entry:
-    st.header("📝 Auto Trade Logging Terminal")
+    st.subheader("📝 Live Execution Logger")
     
     col_input1, col_input2, col_input3 = st.columns([1, 1, 1])
     
     with col_input1:
         trade_date = st.date_input("Trade Date", datetime.today())
-        symbol = st.text_input("Symbol / Instrument", placeholder="e.g. NIFTY, BANKNIFTY, AAPL").upper()
+        symbol = st.text_input("Symbol / Instrument", placeholder="e.g. NIFTY, BANKNIFTY").upper()
         trade_type = st.selectbox("Type", ["BUY", "SELL"])
         quantity = st.number_input("Quantity", min_value=1, value=50, step=1)
         
@@ -92,15 +185,15 @@ with tab_entry:
 
     with col_input3:
         brokerage = st.number_input("Brokerage & Charges (₹)", min_value=0.0, value=40.0, step=5.0)
-        strategy = st.selectbox("Strategy / Setup", ["15-min Breakout", "EMA Crossover", "Support/Resistance", "Trendline Rejection", "Other"])
-        tags = st.text_input("Custom Tags (comma separated)", placeholder="Intraday, Scalp, Nifty")
+        strategy = st.selectbox("Strategy Setup", ["15-min Breakout", "EMA Crossover", "Support/Resistance", "Trendline Rejection", "Other"])
+        tags = st.text_input("Tags", placeholder="Intraday, Scalp, Nifty")
         emotion = st.selectbox("Trading Emotion", ["Confident", "Disciplined", "Fear", "Greed", "FOMO", "Revenge"])
         mistake = st.selectbox("Mistake Logged", ["None", "Early Exit", "Over-leveraged", "Chased Price", "Moved SL", "No SL Used"])
 
     notes = st.text_area("Trade Notes / Technical Observations")
-    screenshot = st.file_uploader("Upload Chart Screenshot (PNG/JPG)", type=["png", "jpg", "jpeg"])
+    screenshot = st.file_uploader("Upload Chart Screenshot", type=["png", "jpg", "jpeg"])
 
-    if st.button("🚀 Record Trade To Journal", use_container_width=True):
+    if st.button("🚀 Commit Trade To Terminal", use_container_width=True):
         if symbol and entry > 0 and exit_p > 0 and sl > 0:
             if trade_type == "BUY":
                 gross_pnl = (exit_p - entry) * quantity
@@ -143,18 +236,18 @@ with tab_entry:
 
             df = pd.concat([df, new_trade], ignore_index=True)
             save_data(df)
-            st.success(f"Trade Recorded! Net P&L: ₹{net_pnl:.2f} | R:R Ratio: 1:{rr_ratio}")
+            st.success(f"✅ Trade Recorded! Net P&L: ₹{net_pnl:.2f} | R:R Ratio: 1:{rr_ratio}")
             st.rerun()
         else:
-            st.error("Kripya saare zaroori fields (Symbol, Entry, Exit, SL) sahi bharein!")
+            st.error("⚠️ Fill all required fields!")
 
 # ==========================================
-# 2. ANALYTICS & INSTITUTIONAL METRICS
+# 2. ANALYTICS
 # ==========================================
 with tab_analytics:
-    st.header("📊 Performance & Risk Metrics")
+    st.subheader("📈 Institutional Metrics")
     if df.empty:
-        st.info("Abhi tak koi trades data nahi hai. Tab 1 se trades enter karein.")
+        st.info("No trade data logged yet.")
     else:
         df_sorted = df.sort_values("Date").reset_index(drop=True)
         total_trades = len(df_sorted)
@@ -170,83 +263,54 @@ with tab_analytics:
         avg_loss = abs(losses["Net_PnL"].mean()) if not losses.empty else 0
         
         expectancy = ((win_rate/100) * avg_win) - (((100 - win_rate)/100) * avg_loss)
-        
-        df_sorted['Win'] = df_sorted['Net_PnL'] > 0
-        streaks = (df_sorted['Win'] != df_sorted['Win'].shift()).cumsum()
-        streak_counts = df_sorted.groupby(streaks)['Win'].agg(['first', 'count'])
-        
-        max_win_streak = streak_counts[streak_counts['first'] == True]['count'].max() if True in streak_counts['first'].values else 0
-        max_loss_streak = streak_counts[streak_counts['first'] == False]['count'].max() if False in streak_counts['first'].values else 0
-
-        df_sorted['Cum_PnL'] = df_sorted['Net_PnL'].cumsum()
-        df_sorted['Peak'] = df_sorted['Cum_PnL'].cummax()
-        df_sorted['Drawdown'] = df_sorted['Cum_PnL'] - df_sorted['Peak']
-        max_drawdown = df_sorted['Drawdown'].min()
 
         m1, m2, m3, m4 = st.columns(4)
         m1.metric("Win Rate", f"{win_rate:.1f}%")
         m2.metric("Profit Factor", f"{profit_factor}")
-        m3.metric("Trade Expectancy", f"₹{expectancy:.2f} /trade")
-        m4.metric("Max Drawdown", f"₹{max_drawdown:.2f}")
-
-        m5, m6, m7, m8 = st.columns(4)
-        m5.metric("Avg Win Amount", f"₹{avg_win:.2f}")
-        m6.metric("Avg Loss Amount", f"₹{avg_loss:.2f}")
-        m7.metric("Max Win Streak", f"{max_win_streak} Trades")
-        m8.metric("Max Loss Streak", f"{max_loss_streak} Trades")
+        m3.metric("Expectancy", f"₹{expectancy:.2f}")
+        m4.metric("Total Trades", total_trades)
 
         st.markdown("---")
-        st.subheader("📈 Cumulative Equity Curve & Drawdown")
-        
-        fig_equity = px.line(df_sorted, x="Date", y="Cum_PnL", title="Capital Growth Curve (Net P&L)", markers=True)
+        df_sorted['Cum_PnL'] = df_sorted['Net_PnL'].cumsum()
+        fig_equity = px.line(df_sorted, x="Date", y="Cum_PnL", title="Equity Growth Curve", template="plotly_dark", markers=True)
+        fig_equity.update_traces(line_color="#D4AF37", line_width=3)
         st.plotly_chart(fig_equity, use_container_width=True)
 
 # ==========================================
-# 3. PSYCHOLOGY & MISTAKES TRACKER
+# 3. PSYCHOLOGY
 # ==========================================
 with tab_psych:
-    st.header("🧠 Behavioral & Mindset Breakdown")
+    st.subheader("🧠 Mindset Analytics")
     if not df.empty:
         col_p1, col_p2 = st.columns(2)
-        
         with col_p1:
-            st.subheader("Impact of Emotions on P&L")
             emo_summary = df.groupby("Emotion")["Net_PnL"].agg(["count", "sum"]).reset_index()
-            fig_emo = px.bar(emo_summary, x="Emotion", y="sum", color="Emotion", title="Net P&L by Emotional State", text_auto=True)
+            fig_emo = px.bar(emo_summary, x="Emotion", y="sum", color="Emotion", title="Net P&L by Emotion", template="plotly_dark")
             st.plotly_chart(fig_emo, use_container_width=True)
 
         with col_p2:
-            st.subheader("Cost of Trading Mistakes")
             mistake_summary = df.groupby("Mistakes")["Net_PnL"].agg(["count", "sum"]).reset_index()
-            fig_mis = px.pie(mistake_summary, names="Mistakes", values="count", title="Mistake Frequency Distribution", hole=0.4)
+            fig_mis = px.pie(mistake_summary, names="Mistakes", values="count", title="Trading Mistakes Breakdown", template="plotly_dark", hole=0.4)
             st.plotly_chart(fig_mis, use_container_width=True)
 
 # ==========================================
-# 4. REVIEW & TRADING CALENDAR
+# 4. CALENDAR REVIEW
 # ==========================================
 with tab_calendar:
-    st.header("📅 Daily, Weekly & Monthly Reviews")
+    st.subheader("📅 Review Heatmap")
     if not df.empty:
-        df['YearMonth'] = df['Date'].dt.to_period('M').astype(str)
         df['DateStr'] = df['Date'].dt.strftime('%Y-%m-%d')
-        
-        review_type = st.radio("Select View", ["Daily Heatmap View", "Monthly Summary"], horizontal=True)
-        
-        if review_type == "Daily Heatmap View":
-            daily_pnl = df.groupby("DateStr")["Net_PnL"].sum().reset_index()
-            fig_cal = px.bar(daily_pnl, x="DateStr", y="Net_PnL", color="Net_PnL", 
-                             color_continuous_scale=["red", "gray", "green"], 
-                             title="Daily Net P&L Review Calendar")
-            st.plotly_chart(fig_cal, use_container_width=True)
-        else:
-            monthly_pnl = df.groupby("YearMonth")["Net_PnL"].sum().reset_index()
-            st.dataframe(monthly_pnl, use_container_width=True)
+        daily_pnl = df.groupby("DateStr")["Net_PnL"].sum().reset_index()
+        fig_cal = px.bar(daily_pnl, x="DateStr", y="Net_PnL", color="Net_PnL", 
+                         color_continuous_scale=["#FF3333", "#222222", "#D4AF37"], 
+                         title="Daily P&L Heatmap", template="plotly_dark")
+        st.plotly_chart(fig_cal, use_container_width=True)
 
 # ==========================================
-# 5. STRATEGY & SETUP TRACKING
+# 5. STRATEGY EDGE
 # ==========================================
 with tab_strategy:
-    st.header("🏷️ Strategy-wise Edge Analysis")
+    st.subheader("🏷️ Setup Win-Rate & Screenshots")
     if not df.empty:
         strat_df = df.groupby("Strategy").agg(
             Total_Trades=('Net_PnL', 'count'),
@@ -255,37 +319,21 @@ with tab_strategy:
         ).reset_index()
         
         st.dataframe(strat_df, use_container_width=True)
-        
-        fig_strat = px.bar(strat_df, x="Strategy", y="Net_Profit", color="Strategy", title="Profitability by Strategy Setup")
+        fig_strat = px.bar(strat_df, x="Strategy", y="Net_Profit", color="Strategy", title="Profitability by Strategy Setup", template="plotly_dark")
         st.plotly_chart(fig_strat, use_container_width=True)
-        
-        st.subheader("🖼️ Setup Screenshot Review Log")
-        trades_with_img = df[df["Screenshot"] != ""]
-        if not trades_with_img.empty:
-            for _, row in trades_with_img.iterrows():
-                with st.expander(f"Trade: {row['Symbol']} | Date: {row['DateStr']} | Setup: {row['Strategy']}"):
-                    st.write(f"**Notes:** {row['Notes']}")
-                    if os.path.exists(row['Screenshot']):
-                        st.image(Image.open(row['Screenshot']), caption="Chart Setup Screenshot", width=600)
 
 # ==========================================
-# 6. GOALS & CAPITAL RISK TRACKER
+# 6. GOALS & RISK CAPITAL
 # ==========================================
 with tab_goals:
-    st.header("🎯 Goal Tracking & Capital Growth")
+    st.subheader("🎯 Goal & Equity Milestones")
     initial_capital = st.number_input("Starting Capital (₹)", value=100000.0, step=5000.0)
     daily_goal = st.number_input("Daily Target Profit (₹)", value=2000.0, step=500.0)
     
     if not df.empty:
         current_pnl = df["Net_PnL"].sum()
         current_cap = initial_capital + current_pnl
-        today_str = datetime.today().strftime('%Y-%m-%d')
-        today_pnl = df[df['Date'].dt.strftime('%Y-%m-%d') == today_str]["Net_PnL"].sum()
         
-        g1, g2, g3 = st.columns(3)
-        g1.metric("Current Total Capital", f"₹{current_cap:,.2f}", f"₹{current_pnl:,.2f} Total P&L")
-        g2.metric("Today's Progress", f"₹{today_pnl:,.2f}", f"Goal: ₹{daily_goal:,.2f}")
-        
-        progress = min(max(today_pnl / daily_goal, 0.0), 1.0) if daily_goal > 0 else 0.0
-        st.progress(progress)
-        st.caption(f"Aapne aaj ke daily goal ka {progress*100:.1f}% achieve kar liya hai.")
+        g1, g2 = st.columns(2)
+        g1.metric("Current Total Equity", f"₹{current_cap:,.2f}", f"₹{current_pnl:,.2f} Net P&L")
+        g2.metric("Target Daily P&L", f"₹{daily_goal:,.2f}")
