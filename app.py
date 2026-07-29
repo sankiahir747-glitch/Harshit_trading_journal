@@ -22,7 +22,7 @@ def check_password():
         st.title("🔒 Harshit Trading Terminal - Secure Access")
         pwd = st.text_input("🔑 Passcode daalein access karne ke liye:", type="password")
         if st.button("Unlock Terminal"):
-            if pwd == "Harshit123":  # Aapka Password
+            if pwd == "Harshity@9363":  # Aapka Password
                 st.session_state["password_correct"] = True
                 st.rerun()
             else:
