@@ -179,7 +179,7 @@ def check_password():
             st.caption("GROW • FOCUS • ACHIEVE")
             pwd = st.text_input("🔑 Enter Passcode:", type="password")
             if st.button("Unlock Terminal", use_container_width=True):
-                if pwd == "Harshity@2005":
+                if pwd == "Harshity@7524":
                     st.session_state["password_correct"] = True
                     st.rerun()
                 else:
